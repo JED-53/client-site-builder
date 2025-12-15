@@ -16,37 +16,37 @@
     --popover: 222 47% 8%;
     --popover-foreground: 210 40% 98%;
 
-    /* Primary - Electric Cyan */
-    --primary: 192 91% 52%;
-    --primary-foreground: 222 47% 6%;
+    /* Primary - Keyce Orange */
+    --primary: 30 100% 48%;
+    --primary-foreground: 210 40% 98%;
 
-    /* Secondary - Deep Blue */
-    --secondary: 222 47% 15%;
+    /* Secondary - Keyce Dark Blue */
+    --secondary: 217 100% 22%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 222 30% 18%;
+    --muted: 217 50% 18%;
     --muted-foreground: 215 20% 60%;
 
-    /* Accent - Vibrant Blue */
-    --accent: 217 91% 60%;
+    /* Accent - Keyce Blue Lighter */
+    --accent: 217 80% 35%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 15%;
-    --ring: 192 91% 52%;
+    --border: 217 50% 20%;
+    --input: 217 50% 15%;
+    --ring: 30 100% 48%;
 
     --radius: 0.75rem;
 
     /* Custom Design Tokens */
-    --glow-primary: 0 0 40px hsl(192 91% 52% / 0.4);
-    --glow-accent: 0 0 60px hsl(217 91% 60% / 0.3);
-    --gradient-primary: linear-gradient(135deg, hsl(192 91% 52%), hsl(217 91% 60%));
-    --gradient-hero: linear-gradient(180deg, hsl(222 47% 8%) 0%, hsl(222 47% 4%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(222 47% 12%), hsl(222 47% 8%));
-    --gradient-shine: linear-gradient(90deg, transparent 0%, hsl(192 91% 52% / 0.1) 50%, transparent 100%);
+    --glow-primary: 0 0 40px hsl(30 100% 48% / 0.4);
+    --glow-accent: 0 0 60px hsl(217 100% 22% / 0.3);
+    --gradient-primary: linear-gradient(135deg, hsl(30 100% 48%), hsl(217 100% 22%));
+    --gradient-hero: linear-gradient(180deg, hsl(217 100% 8%) 0%, hsl(217 100% 4%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(217 80% 12%), hsl(217 100% 8%));
+    --gradient-shine: linear-gradient(90deg, transparent 0%, hsl(30 100% 48% / 0.1) 50%, transparent 100%);
     
     /* Success/Warning colors */
     --success: 142 71% 45%;
@@ -55,14 +55,14 @@
     --warning-foreground: 222 47% 6%;
 
     /* Sidebar */
-    --sidebar-background: 222 47% 6%;
+    --sidebar-background: 217 100% 6%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 192 91% 52%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 47% 15%;
+    --sidebar-primary: 30 100% 48%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 217 100% 22%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 30% 18%;
-    --sidebar-ring: 192 91% 52%;
+    --sidebar-border: 217 50% 20%;
+    --sidebar-ring: 30 100% 48%;
   }
 }
 
@@ -126,15 +126,15 @@
 
   .particle-bg {
     background-image: 
-      radial-gradient(circle at 20% 80%, hsl(192 91% 52% / 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, hsl(217 91% 60% / 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, hsl(192 91% 52% / 0.05) 0%, transparent 30%);
+      radial-gradient(circle at 20% 80%, hsl(30 100% 48% / 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(217 100% 22% / 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, hsl(30 100% 48% / 0.05) 0%, transparent 30%);
   }
 
   .ceremony-bg {
     background: 
-      radial-gradient(ellipse at center top, hsl(217 91% 60% / 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at center bottom, hsl(192 91% 52% / 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at center top, hsl(217 100% 22% / 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at center bottom, hsl(30 100% 48% / 0.1) 0%, transparent 50%),
       var(--gradient-hero);
   }
 }
