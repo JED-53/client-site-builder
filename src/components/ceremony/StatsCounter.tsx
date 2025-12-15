@@ -1,0 +1,65 @@
+import { motion } from 'framer-motion';
+import { useParrainageStore } from '@/store/useParrainageStore';
+import { Promotion } from '@/types/student';
+
+export const StatsCounter = () => {
+  const { students, pairings } = useParrainageStore();
+  
+  const promotions: Promotion[] = ['B1', 'B2', 'B3', 'M1', 'M2'];
+  
+  const filleulsRestants = students.filter(
+    (s) => s.status === 'disponible' && ['B1', 'B2', 'B3', 'M1'].includes(s.promotion)
+  ).length;
+
+  const countByPromotion = (promo: Promotion) => {
+    const total = students.filter((s) => s.promotion === promo).length;
+    const paired = students.filter(
+      (s) => s.promotion === promo && s.status !== 'disponible'
+    ).length;
+    return { total, paired };
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
+    >
+      <div className="card-gradient border border-border rounded-2xl p-6 backdrop-blur-lg">
+        <div className="flex items-center gap-8">
+          {/* Main counter */}
+          <div className="text-center border-r border-border pr-8">
+            <div className="text-4xl font-bold font-display text-gradient">
+              {pairings.length}
+            </div>
+            <div className="text-sm text-muted-foreground mt-1">Paires créées</div>
+          </div>
+          
+          <div className="text-center border-r border-border pr-8">
+            <div className="text-4xl font-bold font-display text-accent">
+              {filleulsRestants}
+            </div>
+            <div className="text-sm text-muted-foreground mt-1">Filleuls restants</div>
+          </div>
+          
+          {/* Promotion breakdown */}
+          <div className="flex gap-4">
+            {promotions.map((promo) => {
+              const { total, paired } = countByPromotion(promo);
+              if (total === 0) return null;
+              
+              return (
+                <div key={promo} className="text-center">
+                  <div className="text-lg font-semibold text-foreground">
+                    {paired}/{total}
+                  </div>
+                  <div className="text-xs text-muted-foreground">{promo}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
