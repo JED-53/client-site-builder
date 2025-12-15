@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Users, ArrowRight } from 'lucide-react';
+import { Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AdminPanel } from '@/components/admin/AdminPanel';
 import { CeremonyScreen } from '@/components/ceremony/CeremonyScreen';
+import keyceLogo from '@/assets/keyce-logo.png';
 
 type View = 'landing' | 'admin' | 'ceremony';
 
@@ -37,9 +38,9 @@ const Index = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/30"
+            className="w-32 h-32 mx-auto mb-6"
           >
-            <Users className="w-10 h-10 text-primary-foreground" />
+            <img src={keyceLogo} alt="Keyce Informatique & I.A." className="w-full h-full object-contain drop-shadow-lg" />
           </motion.div>
           
           <motion.h1
