@@ -58,15 +58,24 @@ export const useParrainageStore = create<ParrainageState>()(
       generatePairing: () => {
         const state = get();
         
-        // Trouver les filleuls disponibles (tous les étudiants qui peuvent être parrainés)
-        const filleulsDisponibles = state.students.filter(
-          (s) => s.status === 'disponible' && ['B1', 'B2', 'B3', 'M1'].includes(s.promotion)
-        );
+        // Ordre de priorité des filleuls : B1, puis B2, puis B3, puis M1
+        const promotionOrder: Promotion[] = ['B1', 'B2', 'B3', 'M1'];
+        
+        let filleul: Student | null = null;
+        
+        // Parcourir les promotions dans l'ordre pour trouver un filleul disponible
+        for (const promo of promotionOrder) {
+          const filleulsPromo = state.students.filter(
+            (s) => s.status === 'disponible' && s.promotion === promo
+          );
+          if (filleulsPromo.length > 0) {
+            // Sélectionner un filleul aléatoire dans cette promotion
+            filleul = filleulsPromo[Math.floor(Math.random() * filleulsPromo.length)];
+            break;
+          }
+        }
 
-        if (filleulsDisponibles.length === 0) return null;
-
-        // Sélectionner un filleul aléatoire
-        const filleul = filleulsDisponibles[Math.floor(Math.random() * filleulsDisponibles.length)];
+        if (!filleul) return null;
         
         // Trouver la promotion du parrain correspondante
         const parrainPromotion = {
