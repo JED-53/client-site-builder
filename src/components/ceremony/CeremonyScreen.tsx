@@ -126,7 +126,7 @@ export const CeremonyScreen = ({ onExit }: CeremonyScreenProps) => {
       </motion.div>
 
       {/* Main content - décalé vers la droite pour laisser place aux stats */}
-      <div className="h-full flex flex-col items-center justify-center pl-48">
+      <div className="h-full flex flex-col items-center justify-center pl-48 pt-16">
         {/* Cards section */}
         <div className="flex items-center justify-center mb-12">
           <StudentCard
