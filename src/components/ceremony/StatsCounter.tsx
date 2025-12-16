@@ -21,9 +21,9 @@ export const StatsCounter = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
+      initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="fixed right-8 top-1/2 -translate-y-1/2 z-50"
+      className="fixed left-8 top-1/2 -translate-y-1/2 z-50"
     >
       <div className="card-gradient border border-border rounded-2xl p-6 backdrop-blur-lg">
         <div className="flex flex-col items-center gap-6">
