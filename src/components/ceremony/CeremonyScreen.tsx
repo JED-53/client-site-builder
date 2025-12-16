@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, RotateCcw, Undo2, Users } from 'lucide-react';
+import { Sparkles, RotateCcw, Undo2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StudentCard } from './StudentCard';
 import { ConnectionLine } from './ConnectionLine';
@@ -8,6 +8,7 @@ import { StatsCounter } from './StatsCounter';
 import { useParrainageStore } from '@/store/useParrainageStore';
 import { Pairing } from '@/types/student';
 import { useToast } from '@/hooks/use-toast';
+import keyceLogo from '@/assets/keyce-logo-new.webp';
 
 interface CeremonyScreenProps {
   onExit: () => void;
@@ -89,8 +90,8 @@ export const CeremonyScreen = ({ onExit }: CeremonyScreenProps) => {
         className="absolute top-8 left-8 right-8 flex justify-between items-center z-50"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
-            <Users className="w-5 h-5 text-primary" />
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+            <img src={keyceLogo} alt="Keyce" className="w-10 h-10 object-contain" />
           </div>
           <div>
             <h1 className="text-xl font-bold font-display text-gradient">
@@ -153,7 +154,7 @@ export const CeremonyScreen = ({ onExit }: CeremonyScreenProps) => {
               exit={{ opacity: 0 }}
               className="text-center mb-8"
             >
-              <p className="text-2xl font-display">
+              <p className="text-lg font-display">
                 <span className="text-accent">{currentPairing.filleul.prenom}</span>
                 {' '}devient filleul(e) de{' '}
                 <span className="text-primary">{currentPairing.parrain.prenom}</span>
