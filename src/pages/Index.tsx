@@ -4,7 +4,7 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AdminPanel } from '@/components/admin/AdminPanel';
 import { CeremonyScreen } from '@/components/ceremony/CeremonyScreen';
-import keyceLogo from '@/assets/keyce-logo.png';
+import keyceLogo from '@/assets/keyce-logo-new.webp';
 
 type View = 'landing' | 'admin' | 'ceremony';
 
