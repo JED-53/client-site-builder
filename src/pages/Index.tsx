@@ -38,7 +38,7 @@ const Index = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-32 h-32 mx-auto mb-6"
+            className="w-32 h-32 mx-auto mb-6 mt-8"
           >
             <img src={keyceLogo} alt="Keyce Informatique & I.A." className="w-full h-full object-contain drop-shadow-lg" />
           </motion.div>

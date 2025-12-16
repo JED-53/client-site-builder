@@ -21,21 +21,21 @@ export const StatsCounter = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="fixed right-8 top-1/2 -translate-y-1/2 z-50"
     >
       <div className="card-gradient border border-border rounded-2xl p-6 backdrop-blur-lg">
-        <div className="flex items-center gap-8">
+        <div className="flex flex-col items-center gap-6">
           {/* Main counter */}
-          <div className="text-center border-r border-border pr-8">
+          <div className="text-center border-b border-border pb-4 w-full">
             <div className="text-4xl font-bold font-display text-gradient">
               {pairings.length}
             </div>
             <div className="text-sm text-muted-foreground mt-1">Paires créées</div>
           </div>
           
-          <div className="text-center border-r border-border pr-8">
+          <div className="text-center border-b border-border pb-4 w-full">
             <div className="text-4xl font-bold font-display text-accent">
               {filleulsRestants}
             </div>
@@ -43,7 +43,7 @@ export const StatsCounter = () => {
           </div>
           
           {/* Promotion breakdown */}
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-3 w-full">
             {promotions.map((promo) => {
               const { total, paired } = countByPromotion(promo);
               if (total === 0) return null;
