@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, forwardRef } from 'react';
 import { Upload, FileText, AlertCircle, CheckCircle } from 'lucide-react';
 import Papa from 'papaparse';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ interface CSVRow {
   promotion: string;
 }
 
-export const StudentImport = () => {
+export const StudentImport = forwardRef<HTMLDivElement>((_, ref) => {
   const { addStudents, students, clearStudents } = useParrainageStore();
   const [isDragging, setIsDragging] = useState(false);
   const [importResult, setImportResult] = useState<{ success: number; errors: string[] } | null>(null);
@@ -106,7 +106,7 @@ export const StudentImport = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div ref={ref} className="space-y-6">
       {/* Drop zone */}
       <div
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -206,4 +206,6 @@ Durand,Pierre,,M1`}
       </div>
     </div>
   );
-};
+});
+
+StudentImport.displayName = 'StudentImport';
