@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useParrainageStore } from '@/store/useParrainageStore';
 import { Promotion } from '@/types/student';
 
-export const StudentList = () => {
+export const StudentList = forwardRef<HTMLDivElement>((_, ref) => {
   const { students, removeStudent } = useParrainageStore();
   const [search, setSearch] = useState('');
   const [filterPromotion, setFilterPromotion] = useState<Promotion | 'all'>('all');
@@ -33,7 +33,7 @@ export const StudentList = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div ref={ref} className="space-y-6">
       {/* Filters */}
       <div className="flex gap-4 items-center">
         <div className="relative flex-1">
@@ -127,4 +127,6 @@ export const StudentList = () => {
       </div>
     </div>
   );
-};
+});
+
+StudentList.displayName = 'StudentList';
