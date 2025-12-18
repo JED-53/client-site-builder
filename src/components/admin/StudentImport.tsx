@@ -23,14 +23,15 @@ export const StudentImport = () => {
   const validPromotions: Promotion[] = ['B1', 'B2', 'B3', 'M1', 'M2'];
 
   const processCSV = (file: File) => {
-    Papa.parse<CSVRow>(file, {
+    Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
+      transformHeader: (header: string) => header.toLowerCase().trim(),
       complete: (results) => {
         const errors: string[] = [];
         const validStudents: { nom: string; prenom: string; matricule?: string; promotion: Promotion }[] = [];
 
-        results.data.forEach((row, index) => {
+        (results.data as CSVRow[]).forEach((row, index) => {
           const lineNum = index + 2; // +2 pour header et index 0
 
           if (!row.nom || !row.prenom) {
