@@ -12,10 +12,12 @@ interface ParrainageState {
   removeStudent: (id: string) => void;
   clearStudents: () => void;
   generatePairing: () => Pairing | null;
+  createManualPairing: (parrainId: string, filleulId: string) => Pairing | null;
   undoLastPairing: () => void;
   resetAllPairings: () => void;
   getAvailableFilleuls: (promotion: Promotion) => Student[];
   getAvailableParrains: () => Student[];
+  getCompatibleParrains: (filleulPromotion: Promotion) => Student[];
   getStats: () => {
     totalStudents: number;
     totalPairings: number;
@@ -122,6 +124,71 @@ export const useParrainageStore = create<ParrainageState>()(
         }));
 
         return pairing;
+      },
+
+      createManualPairing: (parrainId, filleulId) => {
+        const state = get();
+        
+        const parrain = state.students.find((s) => s.id === parrainId);
+        const filleul = state.students.find((s) => s.id === filleulId);
+        
+        if (!parrain || !filleul) return null;
+        
+        // Vérifier que le filleul est disponible
+        if (filleul.status !== 'disponible') return null;
+        
+        // Vérifier la compatibilité des promotions
+        const expectedParrainPromo = {
+          'B1': 'B2',
+          'B2': 'B3',
+          'B3': 'M1',
+          'M1': 'M2',
+        }[filleul.promotion] as Promotion;
+        
+        if (parrain.promotion !== expectedParrainPromo) return null;
+        
+        const pairing: Pairing = {
+          id: generateId(),
+          parrain,
+          filleul,
+          timestamp: new Date(),
+        };
+
+        set((state) => ({
+          pairings: [...state.pairings, pairing],
+          history: [...state.history, state.pairings],
+          students: state.students.map((s) => {
+            if (s.id === filleul.id) {
+              return { ...s, status: 'filleul' as const };
+            }
+            if (s.id === parrain.id) {
+              return {
+                ...s,
+                status: 'parrain' as const,
+                filleulsCount: (s.filleulsCount || 0) + 1,
+              };
+            }
+            return s;
+          }),
+        }));
+
+        return pairing;
+      },
+
+      getCompatibleParrains: (filleulPromotion) => {
+        const state = get();
+        const expectedParrainPromo = {
+          'B1': 'B2',
+          'B2': 'B3',
+          'B3': 'M1',
+          'M1': 'M2',
+        }[filleulPromotion] as Promotion | undefined;
+        
+        if (!expectedParrainPromo) return [];
+        
+        return state.students
+          .filter((s) => s.promotion === expectedParrainPromo)
+          .sort((a, b) => (a.filleulsCount || 0) - (b.filleulsCount || 0));
       },
 
       undoLastPairing: () => {

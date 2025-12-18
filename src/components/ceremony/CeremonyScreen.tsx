@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { StudentCard } from './StudentCard';
 import { ConnectionLine } from './ConnectionLine';
 import { StatsCounter } from './StatsCounter';
+import { ManualPairingDialog } from './ManualPairingDialog';
 import { useParrainageStore } from '@/store/useParrainageStore';
 import { Pairing } from '@/types/student';
 import { useToast } from '@/hooks/use-toast';
@@ -102,6 +103,7 @@ export const CeremonyScreen = ({ onExit }: CeremonyScreenProps) => {
         </div>
         
         <div className="flex gap-3">
+          <ManualPairingDialog />
           <Button
             variant="glow"
             size="sm"
