@@ -75,8 +75,9 @@ export const CeremonyScreen = ({ onExit }: CeremonyScreenProps) => {
     });
   };
 
+  // Étudiants qui doivent encore recevoir un parrain (B1, B2, B3, M1)
   const filleulsRestants = students.filter(
-    (s) => s.status === 'disponible' && ['B1', 'B2', 'B3', 'M1'].includes(s.promotion)
+    (s) => !s.hasParrain && ['B1', 'B2', 'B3', 'M1'].includes(s.promotion)
   ).length;
 
   return (
