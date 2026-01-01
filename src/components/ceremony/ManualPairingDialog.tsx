@@ -31,10 +31,10 @@ export const ManualPairingDialog = ({ onPairingCreated }: ManualPairingDialogPro
   const { students, createManualPairing, getCompatibleParrains } = useParrainageStore();
   const { toast } = useToast();
 
-  // Filleuls disponibles (B1, B2, B3, M1 avec status 'disponible')
+  // Filleuls disponibles (B1, B2, B3, M1 sans parrain)
   const availableFilleuls = useMemo(() => {
     return students.filter(
-      (s) => s.status === 'disponible' && ['B1', 'B2', 'B3', 'M1'].includes(s.promotion)
+      (s) => !s.hasParrain && ['B1', 'B2', 'B3', 'M1'].includes(s.promotion)
     );
   }, [students]);
 

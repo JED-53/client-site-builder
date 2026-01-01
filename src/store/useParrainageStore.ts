@@ -41,6 +41,7 @@ export const useParrainageStore = create<ParrainageState>()(
           id: generateId(),
           status: 'disponible' as const,
           filleulsCount: 0,
+          hasParrain: false,
         }));
         set((state) => ({
           students: [...state.students, ...studentsWithIds],
@@ -65,10 +66,10 @@ export const useParrainageStore = create<ParrainageState>()(
         
         let filleul: Student | null = null;
         
-        // Parcourir les promotions dans l'ordre pour trouver un filleul disponible
+        // Parcourir les promotions dans l'ordre pour trouver un filleul sans parrain
         for (const promo of promotionOrder) {
           const filleulsPromo = state.students.filter(
-            (s) => s.status === 'disponible' && s.promotion === promo
+            (s) => !s.hasParrain && s.promotion === promo
           );
           if (filleulsPromo.length > 0) {
             // Sélectionner un filleul aléatoire dans cette promotion
@@ -109,12 +110,18 @@ export const useParrainageStore = create<ParrainageState>()(
           history: [...state.history, state.pairings],
           students: state.students.map((s) => {
             if (s.id === filleul.id) {
-              return { ...s, status: 'filleul' as const };
+              const hasFilleuls = (s.filleulsCount || 0) > 0;
+              return { 
+                ...s, 
+                status: hasFilleuls ? 'parrain_et_filleul' as const : 'filleul' as const,
+                hasParrain: true,
+              };
             }
             if (s.id === parrain.id) {
+              const willHaveParrain = s.hasParrain;
               return {
                 ...s,
-                status: 'parrain' as const,
+                status: willHaveParrain ? 'parrain_et_filleul' as const : 'parrain' as const,
                 filleulsCount: (s.filleulsCount || 0) + 1,
               };
             }
@@ -133,9 +140,8 @@ export const useParrainageStore = create<ParrainageState>()(
         
         if (!parrain || !filleul) return null;
         
-        // Vérifier que le filleul est disponible
-        if (filleul.status !== 'disponible') return null;
-        
+        // Vérifier que le filleul n'a pas déjà un parrain
+        if (filleul.hasParrain) return null;
         
         // Vérifier la compatibilité des promotions
         const expectedParrainPromo = {
@@ -159,12 +165,18 @@ export const useParrainageStore = create<ParrainageState>()(
           history: [...state.history, state.pairings],
           students: state.students.map((s) => {
             if (s.id === filleul.id) {
-              return { ...s, status: 'filleul' as const };
+              const hasFilleuls = (s.filleulsCount || 0) > 0;
+              return { 
+                ...s, 
+                status: hasFilleuls ? 'parrain_et_filleul' as const : 'filleul' as const,
+                hasParrain: true,
+              };
             }
             if (s.id === parrain.id) {
+              const willHaveParrain = s.hasParrain;
               return {
                 ...s,
-                status: 'parrain' as const,
+                status: willHaveParrain ? 'parrain_et_filleul' as const : 'parrain' as const,
                 filleulsCount: (s.filleulsCount || 0) + 1,
               };
             }
@@ -196,20 +208,29 @@ export const useParrainageStore = create<ParrainageState>()(
         if (state.pairings.length === 0) return;
 
         const lastPairing = state.pairings[state.pairings.length - 1];
-        const previousPairings = state.history[state.history.length - 1] || [];
 
         set((state) => ({
           pairings: state.pairings.slice(0, -1),
           history: state.history.slice(0, -1),
           students: state.students.map((s) => {
             if (s.id === lastPairing.filleul.id) {
-              return { ...s, status: 'disponible' as const };
+              const hasFilleuls = (s.filleulsCount || 0) > 0;
+              return { 
+                ...s, 
+                status: hasFilleuls ? 'parrain' as const : 'disponible' as const,
+                hasParrain: false,
+              };
             }
             if (s.id === lastPairing.parrain.id) {
               const newCount = (s.filleulsCount || 1) - 1;
+              const hasParrain = s.hasParrain;
+              let newStatus: 'disponible' | 'parrain' | 'filleul' | 'parrain_et_filleul' = 'disponible';
+              if (newCount > 0 && hasParrain) newStatus = 'parrain_et_filleul';
+              else if (newCount > 0) newStatus = 'parrain';
+              else if (hasParrain) newStatus = 'filleul';
               return {
                 ...s,
-                status: newCount === 0 ? 'disponible' as const : 'parrain' as const,
+                status: newStatus,
                 filleulsCount: newCount,
               };
             }
@@ -226,13 +247,14 @@ export const useParrainageStore = create<ParrainageState>()(
             ...s,
             status: 'disponible' as const,
             filleulsCount: 0,
+            hasParrain: false,
           })),
         }));
       },
 
       getAvailableFilleuls: (promotion) => {
         return get().students.filter(
-          (s) => s.promotion === promotion && s.status === 'disponible'
+          (s) => s.promotion === promotion && !s.hasParrain
         );
       },
 
@@ -248,7 +270,7 @@ export const useParrainageStore = create<ParrainageState>()(
         
         const remainingFilleuls = promotions.reduce((acc, promo) => {
           acc[promo] = state.students.filter(
-            (s) => s.promotion === promo && s.status === 'disponible' && ['B1', 'B2', 'B3', 'M1'].includes(promo)
+            (s) => s.promotion === promo && !s.hasParrain && ['B1', 'B2', 'B3', 'M1'].includes(promo)
           ).length;
           return acc;
         }, {} as Record<Promotion, number>);
