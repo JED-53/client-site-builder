@@ -6,8 +6,9 @@ export interface Student {
   prenom: string;
   matricule?: string;
   promotion: Promotion;
-  status: 'disponible' | 'parrain' | 'filleul';
+  status: 'disponible' | 'parrain' | 'filleul' | 'parrain_et_filleul';
   filleulsCount?: number;
+  hasParrain?: boolean;
 }
 
 export interface Pairing {
