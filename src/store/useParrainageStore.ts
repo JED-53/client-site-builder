@@ -87,16 +87,14 @@ export const useParrainageStore = create<ParrainageState>()(
           'M1': 'M2',
         }[filleul.promotion] as Promotion;
 
-        // Trouver les parrains disponibles de cette promotion
-        // Priorité à ceux qui n'ont pas encore parrainé
+        // Trouver les parrains disponibles (qui n'ont pas encore de filleul - relation 1-1)
         const parrainsDisponibles = state.students
-          .filter((s) => s.promotion === parrainPromotion)
-          .sort((a, b) => (a.filleulsCount || 0) - (b.filleulsCount || 0));
+          .filter((s) => s.promotion === parrainPromotion && (s.filleulsCount || 0) === 0);
 
         if (parrainsDisponibles.length === 0) return null;
 
-        // Prendre le parrain avec le moins de filleuls
-        const parrain = parrainsDisponibles[0];
+        // Sélectionner un parrain aléatoire parmi ceux disponibles
+        const parrain = parrainsDisponibles[Math.floor(Math.random() * parrainsDisponibles.length)];
 
         const pairing: Pairing = {
           id: generateId(),
@@ -116,7 +114,7 @@ export const useParrainageStore = create<ParrainageState>()(
               return {
                 ...s,
                 status: 'parrain' as const,
-                filleulsCount: (s.filleulsCount || 0) + 1,
+                filleulsCount: 1,
               };
             }
             return s;
@@ -136,6 +134,9 @@ export const useParrainageStore = create<ParrainageState>()(
         
         // Vérifier que le filleul est disponible
         if (filleul.status !== 'disponible') return null;
+        
+        // Vérifier que le parrain n'a pas déjà un filleul (relation 1-1)
+        if ((parrain.filleulsCount || 0) > 0) return null;
         
         // Vérifier la compatibilité des promotions
         const expectedParrainPromo = {
@@ -165,7 +166,7 @@ export const useParrainageStore = create<ParrainageState>()(
               return {
                 ...s,
                 status: 'parrain' as const,
-                filleulsCount: (s.filleulsCount || 0) + 1,
+                filleulsCount: 1,
               };
             }
             return s;
@@ -186,9 +187,9 @@ export const useParrainageStore = create<ParrainageState>()(
         
         if (!expectedParrainPromo) return [];
         
+        // Ne retourner que les parrains sans filleul (relation 1-1)
         return state.students
-          .filter((s) => s.promotion === expectedParrainPromo)
-          .sort((a, b) => (a.filleulsCount || 0) - (b.filleulsCount || 0));
+          .filter((s) => s.promotion === expectedParrainPromo && (s.filleulsCount || 0) === 0);
       },
 
       undoLastPairing: () => {
